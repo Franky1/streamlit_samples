@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "C:\\WinPython\\WPy64-3770\\python-3.7.7.amd64\\python.exe",
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true
+}
