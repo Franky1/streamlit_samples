@@ -31,10 +31,14 @@ def get_mapping_dict(od_x: int, od_y: int):
     return overlay_mapping
 
 
-st.markdown("# Overlay one video over another")
-st.markdown('A utility tool to create lectures using screen recording and a video of a person talking.')
-st.markdown('Just choose a background and an overlay video and adjust parameters to place it where you like.')
-st.markdown('Once the output is generated a download option will appear at the bottom.')
+st.markdown("""
+    # Overlay one video over another
+
+    A utility tool to create lectures using screen recording and a video of a person talking.<br>
+    Just choose a background and an overlay video and adjust parameters to place it where you like.<br>
+    Once the output is generated a download option will appear at the bottom.
+    """,
+    unsafe_allow_html=True)
 
 positions = ['top-right', 'top-left', 'bottom-right', 'bottom-left']
 
