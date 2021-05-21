@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <div class="stMarkdown">
+        <a id="videodownload" href="None" download="overlay_op.mp4">Download Video</a>
+    </div>
+    <script type="text/javascript">
+      /*  run script after the html download button  */
+      /*  get the video player element  */
+      var x = parent.document.getElementsByClassName("stVideo"); // outside iframe
+      var url = x[0].src;
+      console.log(url);
+      /*  get the download element  */
+      var ele = parent.document
+        .getElementsByTagName("iframe")[0]
+        .contentWindow.document.getElementById("videodownload"); // inside iframe
+      ele.href = url;
+    </script>
+  </body>
+</html>

@@ -1,7 +1,9 @@
 import base64
+import codecs
 import subprocess
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 
 def get_binary_file_downloader_html(bin_file, file_label='File'):
@@ -10,6 +12,12 @@ def get_binary_file_downloader_html(bin_file, file_label='File'):
     bin_str = base64.b64encode(data).decode()
     href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{bin_file}">Download {file_label}</a>'
     return href
+
+
+def download_button(html_file):
+    calc_file = codecs.open(html_file, 'r')
+    page = calc_file.read()
+    components.html(html=page, height=50)
 
 
 def get_mapping_dict(od_x: int, od_y: int):
@@ -52,17 +60,22 @@ if back is not None and over is not None:
     with open(ov, mode='wb') as f:
         f.write(over.read())
 
-    st.markdown(f'{bk}<br> {ov}', unsafe_allow_html=True)
+    st.markdown(f"""
+    ### Files
+    - {bk}
+    - {ov}
+    """,
+    unsafe_allow_html=True)
 
     op_vid = "overlay_op.mp4"
     overlay_dict = get_mapping_dict(odist_x, odist_y)
 
-    with st.spinner('Wait for ffmpeg to process...'):
-        cmd = f'ffmpeg -i {bk} -i {ov} -map 0:0 -map 1:1 -vf "movie={ov}, scale={scale_x}:{scale_y} [inner]; [in][inner] overlay={overlay_dict[pos]} [out]" {op_vid} -y'
-        op = subprocess.check_output(cmd, shell=True)
+    if st.button('Run overlay merge'):
+        with st.spinner('Wait for ffmpeg to process...'):
+            cmd = f'ffmpeg -i {bk} -i {ov} -map 0:0 -map 1:1 -vf "movie={ov}, scale={scale_x}:{scale_y} [inner]; [in][inner] overlay={overlay_dict[pos]} [out]" {op_vid} -y'
+            op = subprocess.check_output(cmd, shell=True)
 
-        video_file = open(op_vid, 'rb')
-        video_bytes = video_file.read()
-        st.video(video_bytes)
-
-        # st.markdown(get_binary_file_downloader_html(op_vid, 'Video'), unsafe_allow_html=True)
+            st.video(op_vid)
+            st.balloons()
+            download_button('videodownload.html')
+            # st.markdown(get_binary_file_downloader_html(op_vid, 'Video'), unsafe_allow_html=True)
