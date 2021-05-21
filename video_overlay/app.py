@@ -6,6 +6,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 
+# deprecated, not usable for larger files
 def get_binary_file_downloader_html(bin_file, file_label='File'):
     with open(bin_file, 'rb') as f:
         data = f.read()
@@ -33,7 +34,7 @@ def get_mapping_dict(od_x: int, od_y: int):
 st.markdown("# Overlay one video over another")
 st.markdown('A utility tool to create lectures using screen recording and a video of a person talking.')
 st.markdown('Just choose a background and an overlay video and adjust parameters to place it where you like.')
-# st.markdown('Once the output is generated a download option will appear at the bottom.')
+st.markdown('Once the output is generated a download option will appear at the bottom.')
 
 positions = ['top-right', 'top-left', 'bottom-right', 'bottom-left']
 
@@ -70,7 +71,7 @@ if back is not None and over is not None:
     op_vid = "overlay_op.mp4"
     overlay_dict = get_mapping_dict(odist_x, odist_y)
 
-    if st.button('Run overlay merge'):
+    if st.button('Run overlay merge process'):
         with st.spinner('Wait for ffmpeg to process...'):
             cmd = f'ffmpeg -i {bk} -i {ov} -map 0:0 -map 1:1 -vf "movie={ov}, scale={scale_x}:{scale_y} [inner]; [in][inner] overlay={overlay_dict[pos]} [out]" {op_vid} -y'
             op = subprocess.check_output(cmd, shell=True)
